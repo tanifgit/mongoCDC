@@ -1,0 +1,61 @@
+version: '3.7'
+services:
+  # iris container
+  iris:
+    #image: containers.intersystems.com/intersystems/iris-community:2024.1
+    init: true
+    build: 
+      context: ./iris/build
+      dockerfile: Dockerfile
+    container_name: iris
+    hostname: iris
+    ports:
+    - "1972:1972"
+    - "52773:52773"
+    environment: 
+    - ISC_DATA_DIRECTORY=/iris-shared/durable
+    volumes:
+    - type: bind
+      source: ./iris/data
+      target: /iris-shared
+
+  mongo1:
+    build:
+      context: ./mongo/build
+      dockerfile: Dockerfile
+    container_name: mongo1
+    restart: always
+    ports:
+      - "27017:27017"
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all", "--auth", "--keyFile", "/data/configdb/mongo-keyfile"]
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin123
+    volumes:
+      - ./mongo/data/mongo1_data:/data/db
+
+  mongo2:
+    build:
+      context: ./mongo/build
+      dockerfile: Dockerfile
+    container_name: mongo2
+    restart: always
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all", "--auth", "--keyFile", "/data/configdb/mongo-keyfile"]
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin123
+    volumes:
+      - ./mongo/data/mongo2_data:/data/db
+
+  mongo3:
+    build:
+      context: ./mongo/build
+      dockerfile: Dockerfile
+    container_name: mongo3
+    restart: always
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all", "--auth", "--keyFile", "/data/configdb/mongo-keyfile"]
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin123
+    volumes:
+      - ./mongo/data/mongo3_data:/data/db

@@ -1,0 +1,5 @@
+.vscode
+iris/data
+mongo/data/mongo1_data/*
+mongo/data/mongo2_data/*
+mongo/data/mongo3_data/*

@@ -1,0 +1,27 @@
+    // unexpire passwords for dev mode
+    zn "%SYS"
+    do ##class(Security.Users).UnExpireUserPasswords("*")
+    
+    zn "user"
+    
+    do $SYSTEM.OBJ.LoadDir("/opt/irisapp/src", "ck",,1)
+    
+    zn "%SYS"
+    write "Create web application ..."
+    set webName = "/api/emr"
+    set webProperties("DispatchClass") = "Demo.EMR.Util.API"
+    set webProperties("NameSpace") = "USER"
+    set webProperties("Enabled") = 1
+    set webProperties("AutheEnabled") = 32
+    set sc = ##class(Security.Applications).Create(webName, .webProperties)
+    write sc
+    write "Web application "_webName_" has been created!"
+
+    // create emr credentials (to be used to authenticate with REST API)
+    // and mongo crendentails (to connecto to mongo)
+    zn "USER"
+
+    set status = ##class(Ens.Config.Credentials).SetCredential("emr","SuperUser","SYS")
+    set status = ##class(Ens.Config.Credentials).SetCredential("mongo","admin","admin123")
+
+    halt
