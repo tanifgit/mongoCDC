@@ -1,7 +1,7 @@
 # A sample of utilizing the power of Embedded Python with InterSystems IRIS Interoperability
 
 See the related InterSystems Developer Community article for more information and background (to be publicly published soon)
-You will find there information about the usage of the PyMongo package
+You will find there information about the usage of the [PyMongo](https://pymongo.readthedocs.io/en/stable/) package, in creating an Inbound Adapter and related Business Service to capture changes in a Mongo DB Collection.
 
 ## To get:
 ```
